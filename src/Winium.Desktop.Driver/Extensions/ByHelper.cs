@@ -3,9 +3,6 @@
     #region using
 
     using System;
-    using System.Windows.Automation;
-
-    using Winium.Cruciatus.Core;
 
     #endregion
 
@@ -13,18 +10,15 @@
     {
         #region Public Methods and Operators
 
-        public static By GetStrategy(string strategy, string value)
+        public static SearchCondition GetStrategy(string strategy, string value)
         {
             switch (strategy)
             {
                 case "id":
-                    return By.Uid(value);
                 case "name":
-                    return By.Name(value);
                 case "class name":
-                    return By.AutomationProperty(AutomationElementIdentifiers.ClassNameProperty, value);
                 case "xpath":
-                    return By.XPath(value);
+                    return new SearchCondition(strategy, value);
                 default:
                     throw new NotImplementedException(
                         string.Format("'{0}' is not valid or implemented searching strategy.", strategy));

@@ -2,7 +2,11 @@
 {
     #region using
 
-    using Winium.Cruciatus;
+    using System;
+    using System.IO;
+
+    using FlaUI.Core.Capturing;
+
     using Winium.StoreApps.Common;
 
     #endregion
@@ -13,8 +17,13 @@
 
         protected override string DoImpl()
         {
-            var screenshot = CruciatusFactory.Screenshoter.GetScreenshot();
-            var screenshotSource = screenshot.AsBase64String();
+            var capture = Capture.Screen();
+            string screenshotSource;
+            using (var ms = new MemoryStream())
+            {
+                capture.Bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                screenshotSource = Convert.ToBase64String(ms.ToArray());
+            }
 
             return this.JsonResponse(ResponseStatus.Success, screenshotSource);
         }

@@ -2,7 +2,7 @@
 {
     #region using
 
-    using Winium.Cruciatus.Extensions;
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
@@ -17,9 +17,9 @@
             var dataGridKey = this.ExecutedCommand.Parameters["ID"].ToString();
             var headersPath = this.ExecutedCommand.Parameters["PATH"].ToString();
 
-            var munu = this.Automator.ElementsRegistry.GetRegisteredElement(dataGridKey).ToMenu();
+            var menu = this.Automator.ElementsRegistry.GetRegisteredElement(dataGridKey).ToMenu();
 
-            var element = munu.GetItem(headersPath);
+            var element = menu.GetMenuItem(headersPath);
             if (element == null)
             {
                 throw new AutomationException("No menu item was found", ResponseStatus.NoSuchElement);

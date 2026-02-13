@@ -2,13 +2,14 @@
 {
     #region using
 
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Windows.Automation;
 
-    using Winium.Cruciatus;
-    using Winium.Cruciatus.Exceptions;
+    using FlaUI.Core.Identifiers;
+    using FlaUI.UIA3;
+    using FlaUI.UIA3.Identifiers;
 
     #endregion
 
@@ -16,7 +17,7 @@
     {
         #region Static Fields
 
-        private static readonly Dictionary<string, AutomationProperty> Properties;
+        private static readonly Dictionary<string, PropertyId> Properties;
 
         #endregion
 
@@ -24,17 +25,22 @@
 
         static AutomationPropertyHelper()
         {
-            Properties =
-                typeof(AutomationElementIdentifiers).GetFields(BindingFlags.Public | BindingFlags.Static)
-                    .Where(f => f.FieldType == typeof(AutomationProperty))
-                    .ToDictionary(f => f.Name, f => (AutomationProperty)f.GetValue(null));
+            Properties = new Dictionary<string, PropertyId>();
+
+            var automationObjectIds = typeof(AutomationObjectIds).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.FieldType == typeof(PropertyId));
+
+            foreach (var field in automationObjectIds)
+            {
+                Properties[field.Name] = (PropertyId)field.GetValue(null);
+            }
         }
 
         #endregion
 
         #region Public Methods and Operators
 
-        internal static AutomationProperty GetAutomationProperty(string propertyName)
+        internal static PropertyId GetAutomationProperty(string propertyName)
         {
             const string Suffix = "Property";
             var fullPropertyName = propertyName.EndsWith(Suffix) ? propertyName : propertyName + Suffix;
@@ -43,8 +49,8 @@
                 return Properties[fullPropertyName];
             }
 
-            CruciatusFactory.Logger.Error(string.Format("Property '{0}' is not UI Automation Property", propertyName));
-            throw new CruciatusException("UNSUPPORTED PROPERTY");
+            Logger.Error("Property '{0}' is not UI Automation Property", propertyName);
+            throw new InvalidOperationException("UNSUPPORTED PROPERTY");
         }
 
         #endregion

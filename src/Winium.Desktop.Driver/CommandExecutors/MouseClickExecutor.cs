@@ -4,8 +4,8 @@
 
     using System;
 
-    using Winium.Cruciatus;
-    using Winium.Cruciatus.Core;
+    using FlaUI.Core.Input;
+
     using Winium.StoreApps.Common;
 
     #endregion
@@ -18,14 +18,14 @@
         {
             var buttonId = Convert.ToInt32(this.ExecutedCommand.Parameters["button"]);
 
-            switch ((MouseButton)buttonId)
+            switch (buttonId)
             {
-                case MouseButton.Left:
-                    CruciatusFactory.Mouse.LeftButtonClick();
+                case 0:
+                    Mouse.Click(MouseButton.Left);
                     break;
 
-                case MouseButton.Right:
-                    CruciatusFactory.Mouse.RightButtonClick();
+                case 2:
+                    Mouse.Click(MouseButton.Right);
                     break;
 
                 default:

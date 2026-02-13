@@ -4,7 +4,6 @@
 
     using System.Linq;
 
-    using Winium.Cruciatus;
     using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
@@ -20,7 +19,7 @@
             var searchStrategy = this.ExecutedCommand.Parameters["using"].ToString();
 
             var strategy = ByHelper.GetStrategy(searchStrategy, searchValue);
-            var elements = CruciatusFactory.Root.FindElements(strategy);
+            var elements = strategy.FindAll(FlaUIHelper.Root);
 
             var registeredKeys = this.Automator.ElementsRegistry.RegisterElements(elements);
             var registeredObjects = registeredKeys.Select(e => new JsonElementContent(e));

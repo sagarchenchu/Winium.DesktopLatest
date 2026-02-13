@@ -4,7 +4,7 @@
 
     using System.Collections.Generic;
 
-    using Winium.Cruciatus;
+    using FlaUI.Core;
     using Winium.Desktop.Driver.Input;
 
     #endregion

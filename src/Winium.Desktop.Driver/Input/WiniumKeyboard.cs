@@ -6,10 +6,12 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FlaUI.Core.Input;
+    using FlaUI.Core.WindowsAPI;
+
     using OpenQA.Selenium;
 
-    using Winium.Cruciatus;
-    using Winium.Cruciatus.Settings;
+    using Winium.Desktop.Driver.Automator;
 
     #endregion
 
@@ -25,7 +27,6 @@
 
         public WiniumKeyboard(KeyboardSimulatorType keyboardSimulatorType)
         {
-            CruciatusFactory.Settings.KeyboardSimulatorType = keyboardSimulatorType;
         }
 
         #endregion
@@ -34,16 +35,16 @@
 
         public void KeyDown(string keyToPress)
         {
-            var key = KeyboardModifiers.GetVirtualKeyCode(keyToPress);
+            var key = KeyboardModifiers.GetVirtualKeyShort(keyToPress);
             this.modifiers.Add(keyToPress);
-            CruciatusFactory.Keyboard.KeyDown(key);
+            Keyboard.Press(key);
         }
 
         public void KeyUp(string keyToRelease)
         {
-            var key = KeyboardModifiers.GetVirtualKeyCode(keyToRelease);
+            var key = KeyboardModifiers.GetVirtualKeyShort(keyToRelease);
             this.modifiers.Remove(keyToRelease);
-            CruciatusFactory.Keyboard.KeyUp(key);
+            Keyboard.Release(key);
         }
 
         public void SendKeys(char[] keysToSend)
@@ -85,7 +86,8 @@
             {
                 if (keyEvent.IsNewLine())
                 {
-                    CruciatusFactory.Keyboard.SendEnter();
+                    Keyboard.Press(VirtualKeyShort.ENTER);
+                    Keyboard.Release(VirtualKeyShort.ENTER);
                 }
                 else if (keyEvent.IsModifierRelease())
                 {
@@ -111,7 +113,7 @@
                 str = str.ToUpper();
             }
 
-            CruciatusFactory.Keyboard.SendText(str);
+            Keyboard.Type(str);
         }
 
         #endregion

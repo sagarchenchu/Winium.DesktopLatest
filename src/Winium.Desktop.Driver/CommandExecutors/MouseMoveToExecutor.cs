@@ -3,8 +3,10 @@
     #region using
 
     using System;
+    using System.Drawing;
 
-    using Winium.Cruciatus;
+    using FlaUI.Core.Input;
+
     using Winium.StoreApps.Common;
 
     #endregion
@@ -21,35 +23,35 @@
 
             if (!(haveElement || haveOffset))
             {
-                // TODO: in the future '400 : invalid argument' will be used
                 return this.JsonResponse(ResponseStatus.UnknownError, "WRONG PARAMETERS");
             }
 
-            var resultPoint = CruciatusFactory.Mouse.CurrentCursorPos;
+            var resultPoint = Mouse.Position;
             if (haveElement)
             {
                 var registeredKey = this.ExecutedCommand.Parameters["element"].ToString();
                 var element = this.Automator.ElementsRegistry.GetRegisteredElementOrNull(registeredKey);
                 if (element != null)
                 {
-                    var rect = element.Properties.BoundingRectangle;
-                    resultPoint.X = rect.TopLeft.X;
-                    resultPoint.Y = rect.TopLeft.Y;
+                    var rect = element.BoundingRectangle;
+                    resultPoint = new Point((int)rect.Left, (int)rect.Top);
                     if (!haveOffset)
                     {
-                        resultPoint.X += rect.Width / 2;
-                        resultPoint.Y += rect.Height / 2;
+                        resultPoint = new Point(
+                            (int)(rect.Left + rect.Width / 2),
+                            (int)(rect.Top + rect.Height / 2));
                     }
                 }
             }
 
             if (haveOffset)
             {
-                resultPoint.X += Convert.ToInt32(this.ExecutedCommand.Parameters["xoffset"]);
-                resultPoint.Y += Convert.ToInt32(this.ExecutedCommand.Parameters["yoffset"]);
+                resultPoint = new Point(
+                    resultPoint.X + Convert.ToInt32(this.ExecutedCommand.Parameters["xoffset"]),
+                    resultPoint.Y + Convert.ToInt32(this.ExecutedCommand.Parameters["yoffset"]));
             }
 
-            CruciatusFactory.Mouse.SetCursorPos(resultPoint.X, resultPoint.Y);
+            Mouse.Position = resultPoint;
 
             return this.JsonResponse();
         }

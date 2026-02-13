@@ -2,8 +2,9 @@
 {
     #region using
 
-    using Winium.Cruciatus.Exceptions;
-    using Winium.Cruciatus.Extensions;
+    using System;
+
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -21,9 +22,9 @@
 
             try
             {
-                menu.SelectItem(headersPath);
+                menu.SelectMenuItem(headersPath);
             }
-            catch (CruciatusException exception)
+            catch (Exception exception)
             {
                 return this.JsonResponse(ResponseStatus.NoSuchElement, exception);
             }

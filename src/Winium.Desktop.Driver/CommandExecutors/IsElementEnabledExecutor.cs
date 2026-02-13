@@ -16,7 +16,7 @@
 
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
 
-            return this.JsonResponse(ResponseStatus.Success, element.Properties.IsEnabled);
+            return this.JsonResponse(ResponseStatus.Success, element.IsEnabled);
         }
 
         #endregion

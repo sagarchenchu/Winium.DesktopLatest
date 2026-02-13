@@ -18,7 +18,7 @@
 
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
 
-            var boundingRect = element.Properties.BoundingRectangle;
+            var boundingRect = element.BoundingRectangle;
 
             var response = new Dictionary<string, object>
                                {

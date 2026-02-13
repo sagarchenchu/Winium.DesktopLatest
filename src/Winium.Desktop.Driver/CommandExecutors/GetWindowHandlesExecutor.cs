@@ -3,11 +3,9 @@
     #region using
 
     using System.Linq;
-    using System.Windows.Automation;
 
-    using Winium.Cruciatus;
-    using Winium.Cruciatus.Core;
-    using Winium.Cruciatus.Extensions;
+    using FlaUI.Core.Definitions;
+
     using Winium.StoreApps.Common;
 
     #endregion
@@ -18,11 +16,9 @@
 
         protected override string DoImpl()
         {
-            var typeProperty = AutomationElement.ControlTypeProperty;
-            var windows = CruciatusFactory.Root.FindElements(By.AutomationProperty(typeProperty, ControlType.Window));
+            var windows = FlaUIHelper.Root.FindAllDescendants(cf => cf.ByControlType(ControlType.Window));
 
-            var handleProperty = AutomationElement.NativeWindowHandleProperty;
-            var handles = windows.Select(element => element.GetAutomationPropertyValue<int>(handleProperty));
+            var handles = windows.Select(element => element.Properties.NativeWindowHandle.Value.ToInt32());
 
             return this.JsonResponse(ResponseStatus.Success, handles);
         }

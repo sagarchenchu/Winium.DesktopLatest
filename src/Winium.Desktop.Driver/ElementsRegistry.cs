@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Threading;
 
-    using Winium.Cruciatus.Elements;
+    using FlaUI.Core.AutomationElements;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
@@ -23,7 +23,7 @@
 
         #region Fields
 
-        private readonly Dictionary<string, CruciatusElement> registeredElements;
+        private readonly Dictionary<string, AutomationElement> registeredElements;
 
         #endregion
 
@@ -31,7 +31,7 @@
 
         public ElementsRegistry()
         {
-            this.registeredElements = new Dictionary<string, CruciatusElement>();
+            this.registeredElements = new Dictionary<string, AutomationElement>();
         }
 
         #endregion
@@ -44,12 +44,12 @@
         }
 
         /// <summary>
-        /// Returns CruciatusElement registered with specified key if any exists. Throws if no element is found.
+        /// Returns AutomationElement registered with specified key if any exists. Throws if no element is found.
         /// </summary>
         /// <exception cref="AutomationException">
         /// Registered element is not found or element has been garbage collected.
         /// </exception>
-        public CruciatusElement GetRegisteredElement(string registeredKey)
+        public AutomationElement GetRegisteredElement(string registeredKey)
         {
             var element = this.GetRegisteredElementOrNull(registeredKey);
             if (element != null)
@@ -60,17 +60,29 @@
             throw new AutomationException("Stale element reference", ResponseStatus.StaleElementReference);
         }
 
-        public string RegisterElement(CruciatusElement element)
+        public string RegisterElement(AutomationElement element)
         {
-            var registeredKey =
-                this.registeredElements.FirstOrDefault(
-                    x => x.Value.Properties.RuntimeId == element.Properties.RuntimeId).Key;
+            var runtimeId = element.Properties.RuntimeId.IsSupported
+                ? element.Properties.RuntimeId.Value
+                : null;
+
+            string registeredKey = null;
+            if (runtimeId != null)
+            {
+                registeredKey = this.registeredElements.FirstOrDefault(
+                    x =>
+                    {
+                        var existingId = x.Value.Properties.RuntimeId.IsSupported
+                            ? x.Value.Properties.RuntimeId.Value
+                            : null;
+                        return existingId != null && runtimeId.SequenceEqual(existingId);
+                    }).Key;
+            }
 
             if (registeredKey == null)
             {
                 Interlocked.Increment(ref safeInstanceCount);
 
-                // TODO: Maybe use RuntimeId how registeredKey?
                 registeredKey = element.GetHashCode() + "-"
                                 + safeInstanceCount.ToString(string.Empty, CultureInfo.InvariantCulture);
                 this.registeredElements.Add(registeredKey, element);
@@ -79,7 +91,7 @@
             return registeredKey;
         }
 
-        public IEnumerable<string> RegisterElements(IEnumerable<CruciatusElement> elements)
+        public IEnumerable<string> RegisterElements(IEnumerable<AutomationElement> elements)
         {
             return elements.Select(this.RegisterElement);
         }
@@ -88,9 +100,9 @@
 
         #region Methods
 
-        internal CruciatusElement GetRegisteredElementOrNull(string registeredKey)
+        internal AutomationElement GetRegisteredElementOrNull(string registeredKey)
         {
-            CruciatusElement element;
+            AutomationElement element;
             this.registeredElements.TryGetValue(registeredKey, out element);
             return element;
         }
