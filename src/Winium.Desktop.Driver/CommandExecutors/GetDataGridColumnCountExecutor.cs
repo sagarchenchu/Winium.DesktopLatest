@@ -2,7 +2,7 @@
 {
     #region using
 
-    using Winium.Cruciatus.Extensions;
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -17,7 +17,9 @@
 
             var dataGrid = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey).ToDataGrid();
 
-            return this.JsonResponse(ResponseStatus.Success, dataGrid.ColumnCount);
+            var header = dataGrid.Header;
+            var columnCount = header != null ? header.Columns.Length : 0;
+            return this.JsonResponse(ResponseStatus.Success, columnCount);
         }
 
         #endregion

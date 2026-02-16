@@ -2,9 +2,10 @@
 {
     #region using
 
-    using Winium.Cruciatus.Elements;
-    using Winium.Cruciatus.Exceptions;
-    using Winium.Cruciatus.Extensions;
+    using System;
+
+    using FlaUI.Core.AutomationElements;
+
     using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
@@ -24,12 +25,12 @@
 
             var comboBox = this.Automator.ElementsRegistry.GetRegisteredElement(dataGridKey).ToComboBox();
 
-            CruciatusElement element;
+            AutomationElement element;
             try
             {
-                element = comboBox.ScrollTo(strategy);
+                element = comboBox.ScrollToItem(strategy);
             }
-            catch (CruciatusException exception)
+            catch (Exception exception)
             {
                 return this.JsonResponse(ResponseStatus.NoSuchElement, exception);
             }

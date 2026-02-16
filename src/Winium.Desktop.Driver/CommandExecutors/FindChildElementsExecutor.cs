@@ -21,7 +21,7 @@
 
             var parent = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
             var strategy = ByHelper.GetStrategy(searchStrategy, searchValue);
-            var elements = parent.FindElements(strategy);
+            var elements = strategy.FindAll(parent);
 
             var registeredKeys = this.Automator.ElementsRegistry.RegisterElements(elements);
             var registeredObjects = registeredKeys.Select(e => new JsonElementContent(e));

@@ -1,5 +1,7 @@
 ﻿namespace Winium.Desktop.Driver.CommandExecutors
 {
+    using Winium.Desktop.Driver.Extensions;
+
     internal class ClearElementExecutor : CommandExecutorBase
     {
         #region Methods

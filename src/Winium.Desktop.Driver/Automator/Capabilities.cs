@@ -5,8 +5,6 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
-    using Winium.Cruciatus.Settings;
-
     #endregion
 
     internal class Capabilities
@@ -71,5 +69,12 @@
         }
 
         #endregion
+    }
+
+    internal enum KeyboardSimulatorType
+    {
+        BasedOnWindowsFormsSendKeysClass = 0,
+
+        BasedOnInputSimulatorLib = 1
     }
 }

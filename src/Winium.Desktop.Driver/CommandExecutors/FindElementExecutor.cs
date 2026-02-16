@@ -2,7 +2,6 @@
 {
     #region using
 
-    using Winium.Cruciatus;
     using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
@@ -19,7 +18,7 @@
             var searchStrategy = this.ExecutedCommand.Parameters["using"].ToString();
 
             var strategy = ByHelper.GetStrategy(searchStrategy, searchValue);
-            var element = CruciatusFactory.Root.FindElement(strategy);
+            var element = strategy.FindFirst(FlaUIHelper.Root);
             if (element == null)
             {
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);

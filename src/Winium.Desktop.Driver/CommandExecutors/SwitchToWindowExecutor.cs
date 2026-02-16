@@ -2,9 +2,8 @@
 {
     #region using
 
-    using System.Windows.Automation;
-    using Winium.Cruciatus;
-    using Winium.Cruciatus.Core;
+    using System;
+
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
@@ -18,14 +17,14 @@
         {
             var windowHandle = int.Parse(this.ExecutedCommand.Parameters["name"].ToString());
 
-            var handleProperty = AutomationElement.NativeWindowHandleProperty;
-            var window = CruciatusFactory.Root.FindElement(By.AutomationProperty(handleProperty, windowHandle));
+            var window = FlaUIHelper.Root.FindFirstDescendant(
+                cf => cf.ByProperty(FlaUI.UIA3.Identifiers.AutomationObjectIds.NativeWindowHandleProperty, windowHandle));
             if (window == null)
             {
                 throw new AutomationException("Window cannot be found", ResponseStatus.NoSuchElement);
             }
 
-            window.SetFocus();
+            window.Focus();
 
             return this.JsonResponse();
         }

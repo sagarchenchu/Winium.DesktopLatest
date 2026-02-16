@@ -2,7 +2,8 @@
 {
     #region using
 
-    using Winium.Cruciatus;
+    using FlaUI.Core.Input;
+    using FlaUI.Core.WindowsAPI;
 
     #endregion
 
@@ -12,7 +13,8 @@
 
         protected override string DoImpl()
         {
-            CruciatusFactory.Keyboard.SendEnter();
+            Keyboard.Press(VirtualKeyShort.ENTER);
+            Keyboard.Release(VirtualKeyShort.ENTER);
             return this.JsonResponse();
         }
 

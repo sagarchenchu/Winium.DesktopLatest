@@ -2,6 +2,7 @@
 {
     #region using
 
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -16,7 +17,7 @@
 
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
 
-            return this.JsonResponse(ResponseStatus.Success, element.Text());
+            return this.JsonResponse(ResponseStatus.Success, element.GetText());
         }
 
         #endregion

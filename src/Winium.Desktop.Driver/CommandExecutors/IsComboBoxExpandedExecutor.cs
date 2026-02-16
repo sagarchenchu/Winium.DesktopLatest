@@ -2,7 +2,9 @@
 {
     #region using
 
-    using Winium.Cruciatus.Extensions;
+    using FlaUI.Core.Definitions;
+
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -17,7 +19,9 @@
 
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
 
-            return this.JsonResponse(ResponseStatus.Success, element.ToComboBox().IsExpanded);
+            var comboBox = element.ToComboBox();
+            var isExpanded = comboBox.ExpandCollapseState == ExpandCollapseState.Expanded;
+            return this.JsonResponse(ResponseStatus.Success, isExpanded);
         }
 
         #endregion

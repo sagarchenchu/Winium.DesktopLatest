@@ -2,10 +2,10 @@
 {
     #region using
 
-    using System.Windows.Automation;
+    using System;
 
-    using Winium.Cruciatus.Exceptions;
-    using Winium.Cruciatus.Extensions;
+    using FlaUI.Core.Definitions;
+
     using Winium.StoreApps.Common;
 
     #endregion
@@ -24,15 +24,23 @@
 
             try
             {
-                var selectionItemProperty = SelectionItemPattern.IsSelectedProperty;
-                isSelected = element.GetAutomationPropertyValue<bool>(selectionItemProperty);
+                if (element.Patterns.SelectionItem.IsSupported)
+                {
+                    isSelected = element.Patterns.SelectionItem.Pattern.IsSelected.Value;
+                }
+                else if (element.Patterns.Toggle.IsSupported)
+                {
+                    var toggleState = element.Patterns.Toggle.Pattern.ToggleState.Value;
+                    isSelected = toggleState == ToggleState.On;
+                }
+                else
+                {
+                    isSelected = false;
+                }
             }
-            catch (CruciatusException)
+            catch (Exception)
             {
-                var toggleStateProperty = TogglePattern.ToggleStateProperty;
-                var toggleState = element.GetAutomationPropertyValue<ToggleState>(toggleStateProperty);
-
-                isSelected = toggleState == ToggleState.On;
+                isSelected = false;
             }
 
             return this.JsonResponse(ResponseStatus.Success, isSelected);

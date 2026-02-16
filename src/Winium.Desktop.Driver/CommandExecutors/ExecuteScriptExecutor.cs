@@ -4,13 +4,14 @@
 
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Automation;
+
+    using FlaUI.Core.AutomationElements;
+    using FlaUI.Core.Input;
+    using FlaUI.Core.WindowsAPI;
 
     using Newtonsoft.Json.Linq;
 
-    using Winium.Cruciatus.Core;
-    using Winium.Cruciatus.Elements;
-    using Winium.Cruciatus.Extensions;
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
@@ -101,7 +102,7 @@
                     element.ClickWithPressedCtrl();
                     return;
                 case "brc_click":
-                    element.Click(MouseButton.Left, ClickStrategies.BoundingRectangleCenter);
+                    element.ClickAtCenter();
                     return;
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, "input:", command, HelpUrlInputScript);
@@ -109,7 +110,7 @@
             }
         }
 
-        private void ValuePatternSetValue(CruciatusElement element, IEnumerable<JToken> args)
+        private void ValuePatternSetValue(AutomationElement element, IEnumerable<JToken> args)
         {
             var value = args.ElementAtOrDefault(1);
             if (value == null)
@@ -118,7 +119,7 @@
                 throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
-            element.GetPattern<ValuePattern>(ValuePattern.Pattern).SetValue(value.ToString());
+            element.Patterns.Value.Pattern.SetValue(value.ToString());
         }
 
         #endregion

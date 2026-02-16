@@ -20,7 +20,7 @@
 
             var parent = this.Automator.ElementsRegistry.GetRegisteredElement(parentKey);
             var strategy = ByHelper.GetStrategy(searchStrategy, searchValue);
-            var element = parent.FindElement(strategy);
+            var element = strategy.FindFirst(parent);
             if (element == null)
             {
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);

@@ -2,7 +2,6 @@
 {
     #region using
 
-    using Winium.Cruciatus;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -13,7 +12,7 @@
 
         protected override string DoImpl()
         {
-            var registeredKey = this.Automator.ElementsRegistry.RegisterElement(CruciatusFactory.FocusedElement);
+            var registeredKey = this.Automator.ElementsRegistry.RegisterElement(FlaUIHelper.FocusedElement);
             var registeredObject = new JsonElementContent(registeredKey);
             return this.JsonResponse(ResponseStatus.Success, registeredObject);
         }

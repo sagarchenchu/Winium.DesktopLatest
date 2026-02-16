@@ -4,9 +4,9 @@
 
     using System.Collections.Generic;
 
-    using OpenQA.Selenium;
+    using FlaUI.Core.WindowsAPI;
 
-    using WindowsInput.Native;
+    using OpenQA.Selenium;
 
     #endregion
 
@@ -24,12 +24,12 @@
                                                                  Keys.LeftAlt
                                                              };
 
-        private static readonly Dictionary<string, VirtualKeyCode> ModifiersMap =
-            new Dictionary<string, VirtualKeyCode>
+        private static readonly Dictionary<string, VirtualKeyShort> ModifiersMap =
+            new Dictionary<string, VirtualKeyShort>
                 {
-                    { Keys.Control, VirtualKeyCode.CONTROL }, 
-                    { Keys.Shift, VirtualKeyCode.SHIFT }, 
-                    { Keys.Alt, VirtualKeyCode.MENU }, 
+                    { Keys.Control, VirtualKeyShort.CONTROL }, 
+                    { Keys.Shift, VirtualKeyShort.SHIFT }, 
+                    { Keys.Alt, VirtualKeyShort.MENU }, 
                 };
 
         #endregion
@@ -41,16 +41,16 @@
             return Modifiers.Find(modifier => modifier[0] == key);
         }
 
-        public static VirtualKeyCode GetVirtualKeyCode(string key)
+        public static VirtualKeyShort GetVirtualKeyShort(string key)
         {
-            VirtualKeyCode virtualKey;
+            VirtualKeyShort virtualKey;
 
             if (ModifiersMap.TryGetValue(key, out virtualKey))
             {
                 return virtualKey;
             }
 
-            return default(VirtualKeyCode);
+            return default(VirtualKeyShort);
         }
 
         public static bool IsModifier(string key)

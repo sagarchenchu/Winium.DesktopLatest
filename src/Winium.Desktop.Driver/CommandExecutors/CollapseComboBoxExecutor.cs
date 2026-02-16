@@ -2,8 +2,7 @@
 {
     #region using
 
-    using Winium.Cruciatus.Core;
-    using Winium.Cruciatus.Extensions;
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion

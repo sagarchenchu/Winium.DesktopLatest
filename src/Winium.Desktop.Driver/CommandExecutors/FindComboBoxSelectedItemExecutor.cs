@@ -2,7 +2,7 @@
 {
     #region using
 
-    using Winium.Cruciatus.Extensions;
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
@@ -18,7 +18,7 @@
 
             var comboBox = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey).ToComboBox();
 
-            var selectedItem = comboBox.SelectedItem();
+            var selectedItem = comboBox.GetSelectedItem();
             if (selectedItem == null)
             {
                 throw new AutomationException("No items is selected", ResponseStatus.NoSuchElement);

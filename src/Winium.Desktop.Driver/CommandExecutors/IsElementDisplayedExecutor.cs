@@ -16,7 +16,7 @@
 
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey);
 
-            return this.JsonResponse(ResponseStatus.Success, !element.Properties.IsOffscreen);
+            return this.JsonResponse(ResponseStatus.Success, !element.IsOffscreen);
         }
 
         #endregion

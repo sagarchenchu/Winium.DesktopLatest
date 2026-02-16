@@ -3,9 +3,9 @@
     #region using
 
     using System;
-    using System.Windows.Automation;
 
-    using Winium.Cruciatus.Extensions;
+    using FlaUI.Core.Definitions;
+
     using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
@@ -25,7 +25,7 @@
             try
             {
                 var property = AutomationPropertyHelper.GetAutomationProperty(propertyName);
-                var propertyObject = element.GetAutomationPropertyValue<object>(property);
+                var propertyObject = element.FrameworkAutomationElement.GetPropertyValue(property);
 
                 return this.JsonResponse(ResponseStatus.Success, PrepareValueToSerialize(propertyObject));
             }
@@ -35,11 +35,6 @@
             }
         }
 
-        /* Known types:
-         * string, bool, int - should be as plain text
-         * System.Windows.Automation.ControlType - should be used `ProgrammaticName` property
-         * System.Window.Rect, System.Window.Point - overrides `ToString()` method, can serialize
-         */
         private static object PrepareValueToSerialize(object obj)
         {
             if (obj == null)
@@ -52,10 +47,9 @@
                 return obj.ToString();
             }
 
-            var controlType = obj as ControlType;
-            if (controlType != null)
+            if (obj is ControlType)
             {
-                return controlType.ProgrammaticName;
+                return obj.ToString();
             }
 
             return obj;

@@ -2,7 +2,7 @@
 {
     #region using
 
-    using Winium.Cruciatus.Core;
+    using Winium.Desktop.Driver.Extensions;
 
     #endregion
 
@@ -13,7 +13,7 @@
         protected override string DoImpl()
         {
             var registeredKey = this.ExecutedCommand.Parameters["id"].ToString();
-            this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey).Click(MouseButton.Right, ClickStrategies.BoundingRectangleCenter);
+            this.Automator.ElementsRegistry.GetRegisteredElement(registeredKey).RightClickAtCenter();
 
             return this.JsonResponse();
         }

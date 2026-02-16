@@ -2,8 +2,9 @@
 {
     #region using
 
-    using Winium.Cruciatus.Exceptions;
-    using Winium.Cruciatus.Extensions;
+    using System;
+
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -22,9 +23,17 @@
 
             try
             {
-                dataGrid.ScrollTo(row, column);
+                var rows = dataGrid.Rows;
+                if (row < rows.Length)
+                {
+                    var cells = rows[row].Cells;
+                    if (column < cells.Length)
+                    {
+                        cells[column].Patterns.ScrollItem.PatternOrDefault?.ScrollIntoView();
+                    }
+                }
             }
-            catch (CruciatusException exception)
+            catch (Exception exception)
             {
                 return this.JsonResponse(ResponseStatus.NoSuchElement, exception);
             }

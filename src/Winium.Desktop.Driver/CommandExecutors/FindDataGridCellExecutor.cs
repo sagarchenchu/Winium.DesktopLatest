@@ -2,9 +2,11 @@
 {
     #region using
 
-    using Winium.Cruciatus.Elements;
-    using Winium.Cruciatus.Exceptions;
-    using Winium.Cruciatus.Extensions;
+    using System;
+
+    using FlaUI.Core.AutomationElements;
+
+    using Winium.Desktop.Driver.Extensions;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -21,12 +23,13 @@
 
             var dataGrid = this.Automator.ElementsRegistry.GetRegisteredElement(dataGridKey).ToDataGrid();
 
-            CruciatusElement dataGridCell;
+            AutomationElement dataGridCell;
             try
             {
-                dataGridCell = dataGrid.Item(row, column);
+                var rows = dataGrid.Rows;
+                dataGridCell = rows[row].Cells[column];
             }
-            catch (CruciatusException exception)
+            catch (Exception exception)
             {
                 return this.JsonResponse(ResponseStatus.NoSuchElement, exception);
             }

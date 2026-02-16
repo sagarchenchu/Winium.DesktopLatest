@@ -3,7 +3,9 @@
     #region using
 
     using System.Globalization;
-    using System.Windows.Automation;
+
+    using FlaUI.Core.AutomationElements;
+    using FlaUI.Core.Definitions;
 
     using Winium.StoreApps.Common;
 
@@ -15,17 +17,18 @@
 
         protected override string DoImpl()
         {
-            var node = AutomationElement.FocusedElement;
-            var rootElement = AutomationElement.RootElement;
-            var treeWalker = TreeWalker.ControlViewWalker;
-            while (node != rootElement && !node.Current.ControlType.Equals(ControlType.Window))
+            var automation = FlaUIHelper.Automation;
+            var node = automation.FocusedElement();
+            var rootElement = automation.GetDesktop();
+            var treeWalker = automation.TreeWalkerFactory.GetControlViewWalker();
+            while (node != null && !Equals(node, rootElement) && node.ControlType != ControlType.Window)
             {
                 node = treeWalker.GetParent(node);
             }
 
-            var result = (node == rootElement)
+            var result = (node == null || Equals(node, rootElement))
                              ? string.Empty
-                             : node.Current.NativeWindowHandle.ToString(CultureInfo.InvariantCulture);
+                             : node.Properties.NativeWindowHandle.Value.ToInt32().ToString(CultureInfo.InvariantCulture);
             return this.JsonResponse(ResponseStatus.Success, result);
         }
 

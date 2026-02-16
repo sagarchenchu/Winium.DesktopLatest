@@ -4,7 +4,6 @@
 
     using System;
 
-    using Winium.Cruciatus;
     using Winium.StoreApps.Common;
 
     #endregion
@@ -17,7 +16,7 @@
         {
             var timeout = this.ExecutedCommand.Parameters["ms"];
 
-            CruciatusFactory.Settings.SearchTimeout = Convert.ToInt32(timeout);
+            FlaUIHelper.SearchTimeout = Convert.ToInt32(timeout);
 
             return this.JsonResponse();
         }
